@@ -1,0 +1,51 @@
+<#@ Template Language="C#" HostSpecific="True" Inherits="DynamicTransform" #>
+<#@ Output Extension="cs" #>
+<# if (Model.ModelNamespace != null) { #>
+using <#= Model.ModelNamespace #>;
+<# } #>
+<# if (Model.ViewModelNamespace != null) { #>
+using <#= Model.ViewModelNamespace #>;
+<# } #>
+using Dominio.Credenciales;
+using Modelos.ViewModels;
+using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
+using Modelos.ViewModelMappers.Interfaces;
+using Persistencia.Contextos;
+
+
+
+namespace <#= Model.Namespace #>
+{
+    public class <#= Model.Name #> : ViewModelMapper<<#= Model.ModelName #>, <#= Model.ViewModelName #>, <#= Model.ViewModelName #>>, I<#= Model.ModelName #>ViewModelMapper
+    {
+
+        public <#= Model.Name #>()
+        {
+            Mapper.CreateMap<<#= Model.ModelName #>, <#= Model.ViewModelName #>>()
+			//.ForMember(model => model.Categorias, opt => opt.Ignore())
+			;
+            Mapper.CreateMap<<#= Model.ViewModelName #>, <#= Model.ModelName #>>()
+			//.ForMember(model => model.Categorias, opt => opt.Ignore())
+			;
+        }
+		  public override <#= Model.ViewModelName #> Map(<#= Model.ModelName #> model)
+        {
+            var viewModel = base.Map(model);
+			return viewModel;
+        }
+
+        public override void Map(<#= Model.ViewModelName #> viewModel, <#= Model.ModelName #> model)
+        {
+            base.Map(viewModel, model);
+
+            //this.Set(hospital => model.UserContact = hospital, viewModel.ContactId, UserExtendedDao);
+        }
+
+        public override IEnumerable<<#= Model.ViewModelName #>> Map(IEnumerable<<#= Model.ModelName #>> models)
+        {
+            return models.Select(Map);
+        }
+    }
+}

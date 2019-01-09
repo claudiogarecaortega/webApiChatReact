@@ -1,0 +1,23 @@
+<#@ Template Language="C#" HostSpecific="True" Inherits="DynamicTransform" #>
+<#@ Output Extension="cs" #>
+<# if (Model.ModelNamespace != null) { #>
+using <#= Model.ModelNamespace #>;
+<# } #>
+<# if (Model.ViewModelNamespace != null) { #>
+using <#= Model.ViewModelNamespace #>;
+<# } #>
+using Modelos.ViewModelMappers.Interfaces;
+using Persistencia.Daos.Interfaces;
+using Persistencia.UnitsOfWork;
+<# var modelNameLower = Model.ModelName.ToLower(); #>
+
+namespace <#= Model.ControllerNamespace #>
+{ 
+    public class <#= Model.ControllerName #> : AbmController<<#= Model.ModelName #>, <#= Model.ViewModelName #>, <#= Model.ViewModelName #>>
+    {
+		public <#= Model.ControllerName #>(I<#= Model.ModelName #>ViewModelMapper <#= modelNameLower #>ViewModelMapper, I<#= Model.ModelName #>Dao <#= modelNameLower #>Dao, IUnitOfWorkHelper unitOfWorkHelper, IControllerBehabior abmControllerBahavior)
+			: base(abmControllerBahavior, <#= modelNameLower #>Dao, <#= modelNameLower #>ViewModelMapper, unitOfWorkHelper)
+        {
+        }
+	}
+}

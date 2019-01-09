@@ -1,0 +1,26 @@
+<#@ Template Language="C#" HostSpecific="True" Inherits="DynamicTransform" #>
+<#@ Output Extension="cs" #>
+<# if (Model.ModelNamespace != null) { #>
+using <#= Model.ModelNamespace #>;
+<# } #>
+
+using System.Linq;
+using Persistencia.UnitsOfWork;
+using Utilidades.Activadores;
+using Persistencia.Daos.Interfaces;
+
+namespace <#= Model.Namespace #>
+{ 
+    public class <#= Model.Name #> : Dao<<#= Model.ModelName #>>, I<#= Model.Name #>
+    {
+		
+		  public <#= Model.Name #>(IUnitOfWorkHelper unitOfWorkHelper, IActivatorWrapper activator)
+            : base(unitOfWorkHelper, activator)
+        {
+        }
+
+<# if (Model.ModelNamespace != null) { #>
+		
+<# } #>
+	}
+}
